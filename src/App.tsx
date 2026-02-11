@@ -29,12 +29,16 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            // Si VITE_API_URL no está definida, usamos una cadena vacía para que la petición sea relativa al dominio actual
+            const apiUrl = import.meta.env.VITE_API_URL || ''; 
+            
             const itemsRes = await fetch(`${apiUrl}/api/portfolio`);
+            if (!itemsRes.ok) throw new Error('Failed to fetch portfolio');
             const items = await itemsRes.json();
             setPortfolioItems(items);
 
             const videosRes = await fetch(`${apiUrl}/api/videos`);
+            if (!videosRes.ok) throw new Error('Failed to fetch videos');
             const videos = await videosRes.json();
             setFeaturedVideos(videos);
         } catch (error) {
