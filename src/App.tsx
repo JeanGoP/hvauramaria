@@ -74,6 +74,18 @@ function App() {
     }
   };
 
+  const getImageUrl = (path: string) => {
+    if (!path) return '';
+    // Si ya es una URL completa (http/https), la dejamos igual
+    if (path.startsWith('http')) return path;
+    
+    // Corregimos barras invertidas de Windows a barras normales
+    const cleanPath = path.replace(/\\/g, '/');
+    
+    // Aseguramos que empiece con /
+    return cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50">
       <nav className={`fixed w-full z-50 transition-all duration-300 ${
@@ -178,9 +190,9 @@ function App() {
                 }}
               >
                 {item.type === 'image' ? (
-                  <div onClick={() => setSelectedImage(item.src)} className="cursor-pointer">
+                  <div onClick={() => setSelectedImage(getImageUrl(item.src))} className="cursor-pointer">
                     <img
-                      src={item.src}
+                      src={getImageUrl(item.src)}
                       alt={item.alt}
                       className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
@@ -195,7 +207,7 @@ function App() {
                     className="block w-full h-full relative"
                   >
                     <img
-                      src={item.thumbnail}
+                      src={getImageUrl(item.thumbnail!)}
                       alt={item.alt}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
@@ -207,7 +219,7 @@ function App() {
                   </a>
                 ) : (
                   <video
-                    src={item.src}
+                    src={getImageUrl(item.src)}
                     controls
                     className="w-full h-auto"
                     preload="metadata"
@@ -247,7 +259,7 @@ function App() {
                   return { type: 'vimeo', url: `https://player.vimeo.com/video/${vimeoMatch[1]}?title=0&byline=0&portrait=0` };
                 }
 
-                return { type: 'local', url: src };
+                return { type: 'local', url: getImageUrl(src) };
               };
 
               const embed = getEmbedUrl(video.src, video.vimeoId);
