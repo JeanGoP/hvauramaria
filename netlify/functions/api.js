@@ -5,8 +5,20 @@ import { connectToDb, sql } from '../../server/db.js';
 
 const app = express();
 
-app.use(cors());
+// Configuración explícita de CORS
+app.use(cors({
+    origin: '*', // Permitir cualquier origen por ahora para depurar
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
+
+// Middleware para logging de requests
+app.use((req, res, next) => {
+    console.log(`[Request] ${req.method} ${req.path}`);
+    next();
+});
 
 // Test route
 app.get('/api/test', async (req, res) => {

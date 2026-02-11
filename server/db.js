@@ -21,11 +21,17 @@ const config = {
 
 export async function connectToDb() {
     try {
+        if (!process.env.DB_SERVER) {
+            throw new Error('DB_SERVER environment variable is missing');
+        }
+        
+        console.log(`Connecting to database at ${process.env.DB_SERVER}...`);
+        
         const pool = await sql.connect(config);
-        console.log('Connected to SQL Server');
+        console.log('Connected to SQL Server successfully');
         return pool;
     } catch (err) {
-        console.error('Database connection failed', err);
+        console.error('Database connection failed:', err);
         throw err;
     }
 }
