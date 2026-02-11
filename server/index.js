@@ -1,14 +1,15 @@
-import express from 'express';
-import cors from 'cors';
-import { connectToDb, sql } from './db.js';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Cargar variables de entorno ANTES de importar otros módulos que las usen
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+import express from 'express';
+import cors from 'cors';
+import { connectToDb, sql } from './db.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
