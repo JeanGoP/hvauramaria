@@ -29,11 +29,12 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const itemsRes = await fetch('http://localhost:3000/api/portfolio');
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const itemsRes = await fetch(`${apiUrl}/api/portfolio`);
             const items = await itemsRes.json();
             setPortfolioItems(items);
 
-            const videosRes = await fetch('http://localhost:3000/api/videos');
+            const videosRes = await fetch(`${apiUrl}/api/videos`);
             const videos = await videosRes.json();
             setFeaturedVideos(videos);
         } catch (error) {
