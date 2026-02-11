@@ -233,7 +233,7 @@ function App() {
                 // Check for YouTube
                 const youtubeMatch = src.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
                 if (youtubeMatch) {
-                  return { type: 'youtube', url: `https://www.youtube.com/embed/${youtubeMatch[1]}` };
+                  return { type: 'youtube', url: `https://www.youtube.com/embed/${youtubeMatch[1]}?playsinline=1` };
                 }
 
                 // Check for Vimeo URL
@@ -250,9 +250,7 @@ function App() {
               return (
                 <div
                   key={index}
-                  className={`group relative overflow-hidden bg-neutral-100 rounded-sm ${
-                    embed?.type === 'local' ? '' : (video.type === 'short' ? 'aspect-[9/16]' : 'aspect-video')
-                  }`}
+                  className={`group relative overflow-hidden bg-neutral-100 rounded-sm aspect-[9/16]`}
                   style={{
                     animationDelay: `${index * 100}ms`,
                     animation: 'fadeInUp 0.8s ease-out forwards',
@@ -263,7 +261,8 @@ function App() {
                     <video
                       src={embed.url}
                       controls
-                      className="w-full h-auto block"
+                      playsInline
+                      className="w-full h-full object-contain bg-black" // Ocupa todo el contenedor, fondo negro
                       preload="metadata"
                     >
                       Tu navegador no soporta el elemento de video.
@@ -273,7 +272,8 @@ function App() {
                       src={embed.url}
                       className="absolute inset-0 w-full h-full"
                       frameBorder="0"
-                      allow="autoplay; fullscreen; picture-in-picture"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
                       title={`Video ${index + 1}`}
                     />
